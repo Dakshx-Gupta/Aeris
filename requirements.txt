@@ -3,5 +3,4 @@ polars
 requests
 streamlit-lottie
 matplotlib
-huggingface-hub
-os 
+huggingface-hub 
