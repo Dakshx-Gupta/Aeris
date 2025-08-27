@@ -4,6 +4,7 @@ from streamlit_lottie import st_lottie
 import requests
 from huggingface_hub import InferenceClient
 df1 = pl.read_csv("aqi_clean_state.csv")
+hf_token = sl.secrets["HUGGINGFACE"]["api_key"]
 client = InferenceClient("meta-llama/Meta-Llama-3-8B-Instruct", token=sl.secrets["HUGGINGFACE"]["api_key"])
 
 #  streamlit theme
