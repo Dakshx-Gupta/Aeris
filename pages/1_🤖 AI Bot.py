@@ -38,7 +38,7 @@ if user_input := sl.chat_input("Ask AER about air pollution solutions..."):
             response = client.chat_completion(
                 model="meta-llama/Meta-Llama-3-8B-Instruct",  # free Llama-3
                 messages=sl.session_state.messages,
-                max_tokens=300,
+                max_tokens=500,
             )
             bot_reply = response.choices[0].message["content"]
             sl.markdown(bot_reply)
