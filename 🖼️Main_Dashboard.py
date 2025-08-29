@@ -7,7 +7,7 @@ from streamlit_lottie import st_lottie
 url = 'https://api.data.gov.in/resource/3b01bcb8-0b14-4abf-b6f2-c1bfd384ba69?api-key=579b464db66ec23bdd000001afe11a655d104e004ee570abee8915a3&format=csv'
 response = requests.get(url)
 path = os.path.join(os.getcwd(), "aqi_data.csv")
-df = polars.read_csv("aqi_data.csv",ignore_errors=True, columns=["state", "city","pollutant_id","pollutant_min","pollutant_max","pollutant_avg", "latitude", "longitude"])
+df = polars.read_csv("aqi_data.csv", ignore_errors=True, columns=["state", "city","pollutant_id","pollutant_min","pollutant_max","pollutant_avg", "latitude", "longitude"])
 df = df.with_columns([
     polars.col("pollutant_avg").cast(polars.Int64, strict=False),
     polars.col("pollutant_max").cast(polars.Int64, strict=False)
