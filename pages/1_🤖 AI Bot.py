@@ -3,9 +3,11 @@ import polars as pl
 from streamlit_lottie import st_lottie
 import requests
 from huggingface_hub import InferenceClient
+
 df1 = pl.read_csv("aqi_clean_state.csv")
 hf_token = sl.secrets["HUGGINGFACEHUB_API_TOKEN"]
 client = InferenceClient("meta-llama/Meta-Llama-3-8B-Instruct", token=hf_token)
+
 #  streamlit theme
 sl.set_page_config(page_title="Aeris", page_icon=r"C:\Users\tempe\OneDrive\Documents\Air quality project\Aeris.png")
 url = "https://lottie.host/16969d1e-85b4-4c9c-a549-f79d40d622cc/kxb2JFGleJ.json"
