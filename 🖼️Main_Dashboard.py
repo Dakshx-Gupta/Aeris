@@ -5,9 +5,13 @@ import requests
 from streamlit_lottie import st_lottie
 import io 
 
-url = 'https://api.data.gov.in/resource/3b01bcb8-0b14-4abf-b6f2-c1bfd384ba69?api-key=579b464db66ec23bdd000001afe11a655d104e004ee570abee8915a3&format=csv&limit=5000'
+API_KEY = sl.secrets["AQI_API_KEY"]
+url = ("https://api.data.gov.in/resource/3b01bcb8-0b14-4abf-b6f2-c1bfd384ba69"
+    f"?api-key={API_KEY}&format=csv&limit=5000")
+
 response = requests.get(url)
-df = polars.read_csv(io.BytesIO(response.content), ignore_errors=True, columns=["state", "city","pollutant_id","pollutant_min","pollutant_max","pollutant_avg", "latitude", "longitude", "last_update"])
+df = polars.read_csv(io.BytesIO(response.content), ignore_errors=True)
+print(df)
 df.write_csv("aqi_data.csv")
 
 df = df.with_columns([
