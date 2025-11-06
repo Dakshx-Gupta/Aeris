@@ -11,7 +11,7 @@ url = ("https://api.data.gov.in/resource/3b01bcb8-0b14-4abf-b6f2-c1bfd384ba69"
 
 response = requests.get(url)
 df = polars.read_csv(io.BytesIO(response.content), ignore_errors=True)
-print(df)
+#print(df)
 df.write_csv("aqi_data.csv")
 
 df = df.with_columns([
@@ -23,16 +23,28 @@ df = df.filter(
 )
 
 result = (
-    df.group_by("state")
-    .agg(([
-        polars.col("pollutant_avg").mean().round(0).alias("State Average AQI"),
-        polars.col("pollutant_max").max().alias("State Max AQI"),
-        polars.col("pollutant_min").min().alias("State Min AQI"),
-        polars.col("pollutant_avg").median().alias("State Median AQI"),
-        polars.col("pollutant_id").mode().first().alias("State dominant pollutant"),
-        polars.col("latitude").unique().first().alias("lat"),
-        polars.col("longitude").unique().first().alias("lon")
-    ])).sort("state")
+    df.group_by(["state", "station"])
+    .agg([
+        polars.col("pollutant_avg").max().alias("station_max_aqi"),
+        polars.col("pollutant_max").max().alias("station_pollutant_max"),
+        polars.col("pollutant_min").min().alias("station_pollutant_min"),
+    ])
+    .group_by("state")
+    .agg([
+        polars.col("station_max_aqi").mean().round(0).alias("State Average AQI"),
+        polars.col("station_pollutant_max").max().alias("State Max AQI"),
+        polars.col("station_pollutant_min").min().alias("State Min AQI"),
+        polars.col("station_max_aqi").median().alias("State Median AQI"),
+    ])
+    .join(
+        df.group_by("state").agg([
+            polars.col("pollutant_id").mode().first().alias("State dominant pollutant"),
+            polars.col("latitude").unique().first().alias("lat"),
+            polars.col("longitude").unique().first().alias("lon")
+        ]),
+        on="state"
+    )
+    .sort("state")
 )
 
 result = result.with_columns(polars.col("state").str.replace_all("_", " "))
