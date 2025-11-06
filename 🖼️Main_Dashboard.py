@@ -69,19 +69,18 @@ state_input = sl.selectbox("Select a State:", sorted(df1["state"]))
 if state_input:
     result = df1.filter(polars.col("state") == state_input)
     sl.subheader(f"Air Quality in {state_input}")
-    sl.metric("Average AQI", result["State Average AQI"], border=True, width= 225)
     pollutant = result["State dominant pollutant"].item()
 
     # Other metrics in 3 columns
-    col1, col2, col3 = sl.columns(3)
+    col0, col1, col2, col3 = sl.columns(4)
+    with col0:
+        sl.metric("Average AQI", result["State Average AQI"], border=True, width= 225)
+
     with col1:
         sl.metric("Median AQI", result["State Median AQI"], border=True)
         
     with col2:
         sl.metric("Max AQI", result["State Max AQI"], border=True)
-        
     with col3:
-        sl.metric("Min AQI", result["State Min AQI"], border=True)
-
-    # Dominant pollutant
-    sl.metric("Dominant Pollutant", pollutant, border=True, width=225)
+        # Dominant pollutant
+        sl.metric("Dominant Pollutant", pollutant, border=True, width=225)
