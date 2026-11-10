@@ -22,7 +22,7 @@ A **real-time Air Quality Index (AQI) dashboard** built with **Python, Polars, a
 
 ## 💡 Use Cases  
 - Explore real-time air quality trends   
-- Get **human-like explanations** of data patterns and solutions to improve air quality  
+- Get **easy explanations** of data patterns and solutions to improve air quality  
 
 ---
 
